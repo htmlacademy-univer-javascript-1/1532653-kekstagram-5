@@ -14,3 +14,6 @@ let palindrome = (string) => {
   }
   return true
 };
+
+lineLength('Строка', 10);
+palindrome('Лёша на полке клопа нашёл ');
