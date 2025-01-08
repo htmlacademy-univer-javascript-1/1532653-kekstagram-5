@@ -1,23 +1,23 @@
 import {isEscapeKey, isEnterKey} from './util.js';
 
-let modal = document.querySelector('.big-picture');
-let modalClose = modal.querySelector('.big-picture__cancel');
+const modal = document.querySelector('.big-picture');
+const modalCloseButton = modal.querySelector('.big-picture__cancel');
 
-let commentsList = document.querySelector('.social__comments');
-let commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
-let commentsListFragment = document.createDocumentFragment();
+const commentsList = document.querySelector('.social__comments');
+const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+const commentsListFragment = document.createDocumentFragment();
 
 function createdComments(comments) {
   comments.forEach(({avatar, message, name}) => {
-    let createdComment = commentTemplate.cloneNode(true);
+    const createdComment = commentTemplate.cloneNode(true);
     createdComment.querySelector('.social__picture').src = avatar;
     createdComment.querySelector('.social__picture').alt = name;
     createdComment.querySelector('.social__text').textContent = message;
-    commentsListFragment.appendChild(createdComment);
+    commentsListFragment.append(createdComment);
   });
 
-  commentsList.appendChild(commentsListFragment);
-};
+  commentsList.append(commentsListFragment);
+}
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -38,22 +38,23 @@ function openModal({url, description, likes, comments}) {
   document.body.classList.add('modal-open');
   modal.classList.remove('hidden');
   document.addEventListener('keydown', onDocumentKeydown);
-};
+}
 
 function closeModal() {
   modal.classList.add('hidden');
-  modalClose.removeEventListener('click', onDocumentKeydown);
+  modalCloseButton.removeEventListener('click', onDocumentKeydown);
   document.body.classList.remove('modal-open');
   modal.querySelector('.social__comment-count').classList.remove('hidden');
   modal.querySelector('.comments-loader').classList.remove('hidden');
+  commentsList.innerHTML = '';
   document.removeEventListener('keydown', onDocumentKeydown);
-};
+}
 
-modalClose.addEventListener('click', () => {
+modalCloseButton.addEventListener('click', () => {
   closeModal();
 });
 
-modalClose.addEventListener('keydown', (evt) => {
+modalCloseButton.addEventListener('keydown', (evt) => {
   if (isEnterKey(evt)) {
     closeModal();
   }
